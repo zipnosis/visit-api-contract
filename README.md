@@ -2,8 +2,8 @@
 
 The below establishes a contract for a general purpose API supporting "interview"-like workflows where the user is presented with a series of prompts.
 
-## GET /interview/:id
-Current state of the interview may always be retrieved by `GET /interview`
+## GET /interview/:id/action
+Current state of the interview may always be retrieved by `GET /interview/:id/action`
 
 Response body will always be a JSON object. Example:
 
@@ -125,7 +125,7 @@ If the action is successful, it must return these keys (all keys are always retu
             - Note that, for example, the Continue action may not be labeled "Continue" in cases where another description may be more sensible.
 
 ## POST /interview/:id/action
-- Actions may be taken via `POST /interview`. When POSTing, request body JSON data is required. Example:
+- Actions may be taken via `POST /interview/:id/action`. When POSTing, request body JSON data is required. Example:
 
   ```json
   {
