@@ -2,8 +2,8 @@
 
 The below establishes a contract for a general purpose API supporting "interview"-like workflows where the user is presented with a series of prompts.
 
-## GET /interview/:id/action
-Current state of the interview may always be retrieved by `GET /interview/:id/action`
+## GET /api/v1/visits/:id/interaction
+Current state of the visit may always be retrieved by `GET /api/v1/visits/:id/interaction`
 
 Response body will always be a JSON object. Example:
 
@@ -48,8 +48,8 @@ Response body will always be a JSON object. Example:
         "go_back": {
             "action_label": "Go Back",
         },
-        "cancel_interview": {
-            "action_label": "Cancel interview"
+        "cancel_visit": {
+            "action_label": "Cancel visit"
         }
     }
 }
@@ -101,7 +101,7 @@ If the action is successful, it must return these keys (all keys are always retu
 
       - **`continue`**: Object.
 
-        - This is usually the primary action for going forward in the interview.
+        - This is usually the primary action for going forward in the visit.
         - It may be missing for end states where there is no option to continue.
         - For this action, it is implied that all input fields listed in `"content"` should be included in the request.
 
@@ -109,12 +109,12 @@ If the action is successful, it must return these keys (all keys are always retu
         - This allows the user to go back one step, effectively un-doing their previous action.
         - It may be missing when going back is not possible or not permitted.
 
-      - **`cancel_interview`**: Object.
-        - This fully ends and permanently cancels the current interview.
+      - **`cancel_visit`**: Object.
+        - This fully ends and permanently cancels the current visit.
         - It may be missing if there is no option to cancel, for example after a data request has been submitted to others.
 
       - **`see_other_options`**: Object.
-        - This shows the user their other options available at this moment other than continuing the interview.
+        - This shows the user their other options available at this moment other than continuing the visit.
         - It may be missing if there are no other options, or if we do not wish to highlight any other options in the current state.
 
       - If an action is listed, then it means that the action is currently supported and the server must accept it.
@@ -124,8 +124,8 @@ If the action is successful, it must return these keys (all keys are always retu
             - Human-readable label for the action, translated into the current locale.
             - Note that, for example, the Continue action may not be labeled "Continue" in cases where another description may be more sensible.
 
-## POST /interview/:id/action
-- Actions may be taken via `POST /interview/:id/action`. When POSTing, request body JSON data is required. Example:
+## POST /api/v1/visits/:id/interaction
+- Actions may be taken via `POST /api/v1/visits/:id/interaction`. When POSTing, request body JSON data is required. Example:
 
   ```json
   {
@@ -143,11 +143,11 @@ If the action is successful, it must return these keys (all keys are always retu
 
     - **`responses`**: Object, required. Must include a key-value pair for each of the required inputs listed in the previous `content` response. Each key should be the name of a content item, and each value should be represent the user's input for that item.
 
-- If the request is successful, the state of the interview should change, and the POST response data should be different than the previous response data but must be identical in structure to the GET response, allowing each response to be processed by the same client code again and again.
+- If the request is successful, the state of the visit should change, and the POST response data should be different than the previous response data but must be identical in structure to the GET response, allowing each response to be processed by the same client code again and again.
 
 ## Error handling
 - 401: You are not authenticated.
-- 404: The interview cannot be found or you do not have access to it.
+- 404: The visit cannot be found or you do not have access to it.
 - 422: The action cannot be completed and requires user correction.
 - 500: The action cannot be completed due to a user-uncorrectable server error.
 
