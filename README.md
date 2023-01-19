@@ -89,9 +89,9 @@ If the action is successful, it must return these keys (all keys are always retu
     - Inputs are never required for other actions.
 
   - **`options`**: Array
-    - always present for `"select_input"`, and `"multi_select_input"`
-    - Never present for `"label"` content
+    - Always present for `"select_input"`, and `"multi_select_input"`
     - Possibly present for `"free_text"` to allow the client to provide the options as suggestions (TBD)
+    - Never present for `"display_text"` or `"display_html"` content
     - If present, always an array of one or more objects. Each object will have these keys:
 
       - **`option_name`**: String, identifier for this specific option.
