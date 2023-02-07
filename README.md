@@ -99,32 +99,32 @@ If the action is successful, it must return these keys (all keys are always retu
       - **`option_value`**: [Varies, String, Boolean, or Numeric]: value representing what should be returned in the next request if this option is selected by the user.  Within a content item, no two options will ever have the same value.
       - **`select_none`**: Boolean. Special field that is present only for `"multi_select_input"` content. If this is true, the UI should deselect all other selected options when this option is selected, and it should deselect this option if any other option is selected (within the same content item). Useful for a "None of the above" checkbox.
 
-  - **`actions`**: Object, with zero or more of the following keys, depending on current user state:
+- **`actions`**: Object, with zero or more of the following keys, depending on current user state:
 
-      - **`continue`**: Object.
+    - **`continue`**: Object.
 
-        - This is the primary action for going forward in the interview.
-        - It may be missing for end states where there is no option to continue.
-        - For this action, it is implied that all input fields listed in `"content"` should be included in the request.
+      - This is the primary action for going forward in the interview.
+      - It may be missing for end states where there is no option to continue.
+      - For this action, it is implied that all input fields listed in `"content"` should be included in the request.
 
-      - **`go_back`**: Object.
-        - This allows the user to go back one step, effectively un-doing their previous action.
-        - It may be missing when going back is not possible or not permitted.
+    - **`go_back`**: Object.
+      - This allows the user to go back one step, effectively un-doing their previous action.
+      - It may be missing when going back is not possible or not permitted.
 
-      - **`cancel_interview`**: Object.
-        - This fully ends and permanently cancels the current interview.
-        - It may be missing if there is no option to cancel, for example after a data request has been submitted to others.
+    - **`cancel_interview`**: Object.
+      - This fully ends and permanently cancels the current interview.
+      - It may be missing if there is no option to cancel, for example after a data request has been submitted to others.
 
-      - **`see_other_options`**: Object.
-        - This shows the user their other options available at this moment other than continuing the interview.
-        - It may be missing if there are no other options, or if we do not wish to highlight any other options in the current state.
+    - **`see_other_options`**: Object.
+      - This shows the user their other options available at this moment other than continuing the interview.
+      - It may be missing if there are no other options, or if we do not wish to highlight any other options in the current state.
 
-      - If an action is listed, then it means that the action is currently supported and the server must accept it.
+    - If an action is listed, then it means that the action is currently supported and the server must accept it.
 
-      - Each action must have these keys:
-          - **`action_label`**: String.
-            - Human-readable label for the action, translated into the current locale.
-            - Note that, for example, the Continue action may not be labeled "Continue" in cases where another description may be more sensible.
+    - Each action must have these keys:
+        - **`action_label`**: String.
+          - Human-readable label for the action, translated into the current locale.
+          - Note that, for example, the Continue action may not be labeled "Continue" in cases where another description may be more sensible.
 
 ## POST /interview/:id/action
 - Actions may be taken via `POST /interview/:id/action`. When POSTing, request body JSON data is required. Example:
