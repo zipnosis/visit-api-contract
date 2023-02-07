@@ -62,11 +62,10 @@ If the action is successful, it must return these keys (all keys are always retu
 - **`content`**: Array of objects. Each object if any will have these keys:
 
   - **`content_type`**: String
-    - Must be one of `["display_text", "display_html", "select_input", "multi_select_input", "free_text_input"]`.
+    - Must be one of `["display_text", "display_html", "select_input", "free_text_input"]`.
     - If the content type is `"display_text"`, the client should convey text to the user.
     - If the content type is `"display_html"`, the client should render the HTML. Security sanitization is strongly recommended by both the server and client.
     - If the content type is `"select_input"`, it means the user is required to select one of the options provided. This could look like a radio button or a select menu.
-    - If the content type is `"multi_select_input"`, it means the user is allowed to select more than one of the options provided. This may look like a checkbox set or a multi-select menu.
     - If the content type is `"free_text_input"`, it means the user is allowed enter any characters, possibly up to a `max_length`. The size of the input UI element is up to the client to decide. A possible future extension to this API may be to provide an `suggested_length` property to give the frontend guidance on how large to make the input.
     - If more types need to be added, API developers should notify clients, treat it as a breaking change, and not release until all clients are ready to handle the new types.
 
@@ -88,8 +87,10 @@ If the action is successful, it must return these keys (all keys are always retu
     - Indicates whether a user response to this item is required in order to take the `"continue"` action.
     - Inputs are never required for other actions.
 
+  - **`exclusive`**: Boolean. Special field that may be present for `"boolean"` content. This signals that the current item, if true, should be the only true item among all other boolean items in the current view, and that if any other boolean item is true, this item should not be true. Useful for a "None of the above" checkbox.
+
   - **`options`**: Array
-    - Always present for `"select_input"`, and `"multi_select_input"`
+    - Always present for `"select_input"`
     - Possibly present for `"free_text"` to allow the client to provide the options as suggestions (TBD)
     - Never present for `"display_text"` or `"display_html"` content
     - If present, always an array of one or more objects. Each object will have these keys:
@@ -97,7 +98,6 @@ If the action is successful, it must return these keys (all keys are always retu
       - **`option_name`**: String, identifier for this specific option.
       - **`option_label`**: String, human-readable label for this specific option, translated into the current locale
       - **`option_value`**: [Varies, String, Boolean, or Numeric]: value representing what should be returned in the next request if this option is selected by the user.  Within a content item, no two options will ever have the same value.
-      - **`select_none`**: Boolean. Special field that is present only for `"multi_select_input"` content. If this is true, the UI should deselect all other selected options when this option is selected, and it should deselect this option if any other option is selected (within the same content item). Useful for a "None of the above" checkbox.
 
 - **`actions`**: Object, with zero or more of the following keys, depending on current user state:
 
