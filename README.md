@@ -1,4 +1,4 @@
-# API Contract
+# API Contract 0.1.0
 
 The below establishes a contract for a general purpose API supporting "interview"-like workflows where the user is presented with a series of prompts.
 
