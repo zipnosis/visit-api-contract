@@ -64,9 +64,10 @@ If the action is successful, it must return these keys (all keys are always retu
 - **`content`**: Array of objects. Each object if any will have these keys:
 
   - **`content_type`**: String
-    - Must be one of `["display_text", "display_html", "select_input", "free_text_input"]`.
+    - Must be one of `["display_text", "display_html", "boolean", "select_input", "free_text_input"]`.
     - If the content type is `"display_text"`, the client should convey text to the user.
     - If the content type is `"display_html"`, the client should render the HTML. Security sanitization is strongly recommended by both the server and client.
+    - If the content type is `"boolean"`, it means the user should provide a true or false answer to the question. This could look like a checkbox, or two radio buttons, or if it stands alone it could be two action buttons.
     - If the content type is `"select_input"`, it means the user is required to select one of the options provided. This could look like a radio button or a select menu.
     - If the content type is `"free_text_input"`, it means the user is allowed enter any characters, possibly up to a `max_length`. The size of the input UI element is up to the client to decide. A possible future extension to this API may be to provide an `suggested_length` property to give the frontend guidance on how large to make the input.
     - If more types need to be added, API developers should notify clients, treat it as a breaking change, and not release until all clients are ready to handle the new types.
