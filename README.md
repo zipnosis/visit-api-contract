@@ -1,6 +1,6 @@
 # Visit API Contract
 
-Semantic version 0.3.0
+Semantic version 0.4.0
 
 The below establishes a contract for a general purpose API supporting "interview"-like workflows where the user is presented with a series of prompts.
 
@@ -99,7 +99,6 @@ If the action is successful, it must return these keys (all keys are always pres
     - Never present for `"display_text"` or `"display_html"` content
     - If present, always an array of one or more objects. Each object will have these keys:
 
-      - **`option_name`**: String, identifier for this specific option.
       - **`option_label`**: String, human-readable label for this specific option, translated into the current locale
       - **`option_value`**: [Varies, String, Boolean, or Numeric]: value representing what should be returned in the next request if this option is selected by the user.  Within a content item, no two options will ever have the same value.
 
