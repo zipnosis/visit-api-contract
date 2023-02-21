@@ -1,6 +1,6 @@
 # Visit API Contract
 
-Semantic version 0.2.1
+Semantic version 0.3.0
 
 The below establishes a contract for a general purpose API supporting "interview"-like workflows where the user is presented with a series of prompts.
 
@@ -16,19 +16,19 @@ Response body will always be a JSON object. Example:
     "content": [
         {
             "content_type": "display_text",
-            "content_key": "intro_paragraph",
+            "content_name": "intro_paragraph",
             "display_text": "Please tell us a little about yourself to get started."
         },
         {
             "content_type": "free_text_input",
-            "content_key": "first_name",
+            "content_name": "first_name",
             "content_label": "First Name",
             "required": true,
             "max_length": 60
         },
         {
             "content_type": "select_input",
-            "content_key": "age_category",
+            "content_name": "age_category",
             "content_label": "Age",
             "required": true,
             "options": [
@@ -72,7 +72,7 @@ If the action is successful, it must return these keys (all keys are always pres
     - If the content type is `"free_text_input"`, it means the user is allowed enter any characters, possibly up to a `max_length`. The size of the input UI element is up to the client to decide. A possible future extension to this API may be to provide an `suggested_length` property to give the frontend guidance on how large to make the input.
     - If more types need to be added, API developers should notify clients, treat it as a breaking change, and not release until all clients are ready to handle the new types.
 
-  - **`content_key`**: String
+  - **`content_name`**: String
     - Identifies the content item in the current view.
     - Included also for `"display_text"` and `"display_html"` content, as it helps with front-end frameworks that require a unique identifier for repeat data.
     - The value must be used as the key for providing key-value pairs in the `responses` portion of the next request.
