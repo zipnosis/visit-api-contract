@@ -1,6 +1,6 @@
 # Visit API Contract
 
-Semantic version 0.2.0
+Semantic version 0.2.1
 
 The below establishes a contract for a general purpose API supporting "interview"-like workflows where the user is presented with a series of prompts.
 
@@ -57,7 +57,7 @@ Response body will always be a JSON object. Example:
 }
 ```
 
-If the action is successful, it must return these keys (all keys are always returned unless noted otherwise):
+If the action is successful, it must return these keys (all keys are always present unless noted otherwise):
 
 - **`state_name`**: String, may be used as a screen identifier such as `"welcome"`
 - **`title`**: String, human-readable slide title/heading, usage optional, will be translated into the current locale
@@ -82,12 +82,13 @@ If the action is successful, it must return these keys (all keys are always retu
     - Only present for user input content
     - May serve as the `<legend>` for a radio button `<fieldset>`.
 
-  - **`display_text`**: String, human-readable and translated, only present for `display_text` type content.
+  - **`display_text`**: String, human-readable and translated; only present for `display_text` type content.
 
-  - **`display_html`**: String, human-readable and translated, only present for `display_html` content.
+  - **`display_html`**: String, human-readable and translated; only present for `display_html` content.
 
   - **`required`**: Boolean
     - Indicates whether a user response to this item is required in order to take the `"continue"` action.
+    - Only present for input content items.
     - Inputs are never required for other actions.
 
   - **`exclusive`**: Boolean. Special field that may be present for `"boolean_input"` content. This signals that the current item, if true, should be the only true item among all other boolean inputs in the current view, and that if any other boolean input is true, this item should not be true. Useful for a "None of the above" checkbox.
