@@ -1,6 +1,6 @@
 # Visit API Contract
 
-Semantic version 0.4.0
+Semantic version 0.4.1
 
 The below establishes a contract for a general purpose API supporting "interview"-like workflows where the user is presented with a series of prompts.
 
@@ -79,12 +79,13 @@ If the action is successful, it must return these keys (all keys are always pres
 
   - **`content_label`**: String
     - Human-readable label, translated into the current locale.
-    - Only present for user input content
+    - Only present for user input content.
+    - Usually plain text but in general may have HTML value.
     - May serve as the `<legend>` for a radio button `<fieldset>`.
 
   - **`display_text`**: String, human-readable and translated; only present for `display_text` type content.
 
-  - **`display_html`**: String, human-readable and translated; only present for `display_html` content.
+  - **`display_html`**: String, human-readable and translated; only present for `display_html` type content.
 
   - **`required`**: Boolean
     - Indicates whether a user response to this item is required in order to take the `"continue"` action.
