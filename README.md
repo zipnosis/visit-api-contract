@@ -1,6 +1,6 @@
 # Visit API Contract
 
-Semantic version 0.5.0
+Semantic version 0.6.0
 
 The below establishes a contract for a general purpose API supporting "interview"-like workflows where the user is presented with a series of prompts.
 
@@ -68,7 +68,9 @@ If the action is successful, it must return these keys (all keys are always pres
     - If the content type is `"display_only"`, the client should display the label to the user. The label may contain HTML.
     - If the content type is `"boolean_input"`, it means the user should provide a true or false answer to the question. This could look like a checkbox, or two radio buttons, or if it stands alone it could be two action buttons.
     - If the content type is `"select_input"`, it means the user is required to select one of the options provided. This could look like a radio button or a select menu.
-    - If the content type is `"free_text_input"`, it means the user is allowed enter any characters, possibly up to a `max_length`. The size of the input UI element is up to the client to decide. A possible future extension to this API may be to provide an `suggested_length` property to give the frontend guidance on how large to make the input.
+    - If the content type is `"free_text_input"`, it means the user is required to enter text, and any characters are allowed, possibly up to a `max_length`. The size of the input UI element is up to the client to decide.
+    - If the content type is `"numeric_input"`, it means the user is required enter a number, possibly restricted to be `integer_only`.
+    - If the content type is `"date_input"`, it means the user is required to enter a date. The API will expect `yyyy-mm-dd` format, though user interfaces should be localized (e.g. `mm/dd/yyyy` format in U.S.)
     - If more types need to be added, API developers should notify clients, treat it as a breaking change, and not release until all clients are ready to handle the new types.
 
   - **`content_name`**: String
@@ -86,16 +88,20 @@ If the action is successful, it must return these keys (all keys are always pres
     - Only present for input content items.
     - Inputs are never required for other actions.
 
-  - **`select_none`**: Boolean. Special field that may be present for `"boolean_input"` content. This signals that the current item, if true, should be the only true item among all other boolean inputs in the current view, and that if any other boolean input is true, this item should not be true. Useful for a "None of the above" checkbox.
+  - **`select_none`**: Boolean. Special field that may be present for `"boolean_input"` content. This signals that the current item, if true, must be the only true item among all other boolean inputs in the current view, and that if any other boolean input is true, this item must not be true. Useful for a "None of the above" checkbox.
+
+  - **`max_length`**: Number. Special field that is returned for `"free_text_input"` content. This signals that the input must be limited to this number of characters.
+
+  - **`integer_only`**: Boolean. Special field that is returned for `"numeric_input"` content. This signals that the input must be an integer, not a floating point / decimal number.
 
   - **`options`**: Array
     - Always present for `"select_input"`
-    - Possibly present for `"free_text"` to allow the client to provide the options as suggestions (TBD, future work)
+    - Possibly present for `"free_text_input"` to allow the client to provide the options as suggestions (TBD, future work)
     - Never present for `"display_only"` content
     - If present, always an array of one or more objects. Each object will have these keys:
 
       - **`option_label`**: String, human-readable label for this specific option, translated into the current locale
-      - **`option_value`**: [Varies, String, Boolean, or Numeric]: value representing what should be returned in the next request if this option is selected by the user.  Within a content item, no two options will ever have the same value.
+      - **`option_value`**: [Varies, String, Boolean, or Numeric]: value representing what must be returned in the next request if this option is selected by the user.  Within a content item, no two options will ever have the same value.
 
 - **`actions`**: Object, with zero or more of the following keys, depending on current user state:
 
@@ -103,7 +109,7 @@ If the action is successful, it must return these keys (all keys are always pres
 
       - This is the primary action for going forward in the interview.
       - It may be missing for end states where there is no option to continue.
-      - For this action, it is implied that all input fields listed in `"content"` should be included in the request.
+      - For this action, it is implied that all input fields listed in `"content"` must be included in the request.
 
     - **`go_back`**: Object.
       - This allows the user to go back one step, effectively un-doing their previous action.
@@ -141,7 +147,7 @@ If the action is successful, it must return these keys (all keys are always pres
 
     - **`action_name`**: String, required. Must be one of the items listed in the `"actions"` object from the GET or previous POST response.
 
-    - **`responses`**: Object, required. Must include a key-value pair for each of the required inputs listed in the previous `content` response. Each key should be the name of a content item, and each value should be represent the user's input for that item.
+    - **`responses`**: Object, required. Must include a key-value pair for each of the required inputs listed in the previous `content` response. Each key must be the name of a content item, and each value must be represent the user's input for that item.
 
 - If the request is successful, the state of the visit should change, and the POST response data should be different than the previous response data but must be identical in structure to the GET response, allowing each response to be processed by the same client code again and again.
 
